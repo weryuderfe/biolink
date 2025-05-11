@@ -1,16 +1,16 @@
+# pages/Public Page.py
+
 import streamlit as st
 import json
 import os
 
-st.set_page_config(page_title="Link Bio Page", layout="centered")
+st.set_page_config(page_title="Link Bio Publik", layout="centered")
 
-# Ambil username dari URL (query string)
-query_params = st.experimental_get_query_params()
-username = query_params.get("user", [None])[0]
+st.title("🌐 Halaman Publik Link Bio")
 
-if username is None:
-    st.error("Username tidak ditemukan di URL. Contoh: ?user=johndoe")
-else:
+username = st.text_input("Masukkan username:", "")
+
+if username:
     file_path = f"saved_pages/{username}.json"
     if not os.path.exists(file_path):
         st.error("Halaman tidak ditemukan.")
@@ -18,10 +18,8 @@ else:
         with open(file_path, "r") as f:
             data = json.load(f)
         
-        st.title(data["title"])
+        st.markdown(f"## {data['title']}")
         st.markdown(f"**@{data['username']}**")
-
         st.markdown("---")
         for link in data["links"]:
             st.markdown(f"🔗 [{link['label']}]({link['url']})")
-
